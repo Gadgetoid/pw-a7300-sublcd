@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    branches: [main]
+    tags: ['v*']
   pull_request:
 
 permissions:
@@ -20,3 +22,27 @@ jobs:
           path: |
             out/card
             out/build-info.txt
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      PACKAGE: pw-a7300-sublcd-${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: pw-a7300-sublcd
+          path: ${{ env.PACKAGE }}
+      - name: Package
+        run: |
+          cp README.md LICENSE "$PACKAGE/"
+          python3 -c 'import os, shutil; shutil.make_archive(os.environ["PACKAGE"], "zip", ".", os.environ["PACKAGE"])'
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            ${{ env.PACKAGE }}.zip
+            ${{ env.PACKAGE }}/build-info.txt
