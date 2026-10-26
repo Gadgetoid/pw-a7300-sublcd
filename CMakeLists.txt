@@ -65,6 +65,11 @@ sublcd_app(examples backlight Backlight)
 sublcd_app(examples keyboard Keyboard)
 sublcd_app(examples snake Snake)
 sublcd_app(examples greys Greys)
+sublcd_app(examples tamagotchi Tamagotchi)
+target_sources(examples_tamagotchi PRIVATE
+    examples/tamagotchi/tamalib/cpu.c
+    examples/tamagotchi/tamalib/hw.c
+    examples/tamagotchi/tamalib/tamalib.c)
 
 option(SUBLCD_EXPERIMENTS "Build experiments" OFF)
 if(SUBLCD_EXPERIMENTS)
