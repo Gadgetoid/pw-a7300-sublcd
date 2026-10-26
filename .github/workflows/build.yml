@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build
+        run: sh build.sh out
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pw-a7300-sublcd
+          path: |
+            out/card
+            out/build-info.txt
