@@ -6,7 +6,7 @@ The library talks to Sharp's CE drivers and runs both on the plain CE desktop an
 
 - Greys and brightness need pwsh2-boot's sub LCD driver; Sharp's is black and white, backlight on or off. See [Display](#display) and [Brightness](#brightness).
 - Holding the backlight on assumes the power manager's idle time is over 2 s. See [Backlight](#backlight).
-- One beep pitch: only the length varies. See [Buzzer](#buzzer).
+- Pitched tones need pwsh2-boot's sub LCD driver; Sharp's buzzer driver has one pitch. See [Buzzer](#buzzer).
 - In dictionary mode, the main screen is not repainted while an app runs; an app without a window leaves Sharp's "Please wait" message up. The examples open one with `window.h`. See [Dictionary mode](#dictionary-mode).
 
 ## Display
@@ -47,6 +47,8 @@ The sub backlight is pad `PWM2`, which Sharp's `backlight.dll` drives as a GPIO.
 ## Buzzer
 
 `BZR1:` is `EDNA2_Buzzer.dll`, which clicks for keys and taps. Sounds are presets at a fixed pitch, differing only in length. Its registry events (`Drivers\BuiltIn\Buzzer\Event\<Name>`) and `DeviceIoControl` code `0x8000200F` both queue the same request: mode 1, alarm pattern and time. `sublcd_beep()` sends pattern 1, which plays for the time asked.
+
+The piezo sits between PWM channels 4 and 7, driven in antiphase. Sharp only uses 4 kHz; pwsh2-boot's SLD1: driver adds code `0x104`, which `sublcd_tone()` uses for any pitch from 20 Hz to 20 kHz. Loudness is even from 250 Hz to 10 kHz. Sharp's key and tap clicks share the channels and end a tone.
 
 ## Keyboard input
 

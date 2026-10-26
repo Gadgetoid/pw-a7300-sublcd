@@ -4,8 +4,7 @@ A small C library and examples for the Sharp Brain PW-A7300's 240x120 sub LCD un
 
 ## Limitations
 
-- Greys and backlight brightness need pwsh2-boot's sub LCD driver. With Sharp's: black and white, backlight on or off.
-- One beep pitch: only the length varies.
+- Greys, backlight brightness and pitched tones need pwsh2-boot's sub LCD driver. With Sharp's: black and white, backlight on or off, one beep pitch.
 - In dictionary mode, the main screen is not repainted while an app runs.
 
 [How it works](docs/how-it-works.md) explains each.
